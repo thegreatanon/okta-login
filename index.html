@@ -1,0 +1,235 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width,initial-scale=1" />
+    <title>Sign in</title>
+    <meta http-equiv="Content-Security-Policy"
+        content="default-src 'self' https:; img-src https: data:; style-src 'unsafe-inline' 'self' https:; script-src 'self' 'unsafe-inline'; form-action 'none';">
+    <style>
+        * {
+            box-sizing: border-box;
+        }
+
+        html,
+        body {
+            height: 100%;
+            margin: 0;
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Inter, Arial, sans-serif;
+            color: #111;
+        }
+
+        /* Top banner */
+        .topbar {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 64px;
+            background: #f5f6f8;
+            border-bottom: 1px solid #e5e7eb;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 10px;
+            text-align: center;
+            z-index: 3;
+            padding: 0 12px;
+        }
+
+        .topbar img {
+            height: 22px;
+            width: auto;
+        }
+
+        .topbar .title {
+            font-size: 16px;
+            font-weight: 600;
+        }
+
+        .topbar .subtitle {
+            display: block;
+            font-size: 13px;
+            color: #555;
+            margin-top: 2px;
+        }
+
+        /* Background */
+        .bg {
+            position: fixed;
+            inset: 0;
+            background: url('https://ok7static.oktacdn.com/fs/bco/7/fs01bken4lzQlnc1v358') center center / cover no-repeat fixed;
+            z-index: 0;
+        }
+
+        /* Layout */
+        .wrap {
+            position: relative;
+            min-height: 100%;
+            padding-top: 96px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            z-index: 1;
+        }
+
+        /* Card */
+        .card {
+            width: 420px;
+            max-width: calc(100% - 32px);
+            background: #fff;
+            border: 1px solid #e5e7eb;
+            border-radius: 6px;
+            box-shadow: 0 6px 18px rgba(0, 0, 0, .12);
+        }
+
+        .card header {
+            border-bottom: 1px solid #eef0f3;
+            padding: 18px;
+            text-align: center;
+        }
+
+        .card header img {
+            height: 28px;
+            width: auto;
+        }
+
+        .card .body {
+            padding: 20px;
+        }
+
+        label {
+            display: block;
+            font-size: 14px;
+            margin-bottom: 6px;
+        }
+
+        input[type="text"],
+        input[type="password"] {
+            width: 100%;
+            padding: 10px;
+            font-size: 14px;
+            border: 1px solid #cfcfcf;
+            border-radius: 4px;
+            margin-bottom: 12px;
+        }
+
+        .remember {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            font-size: 13px;
+            margin: 6px 0 16px;
+        }
+
+        button {
+            width: 100%;
+            padding: 11px;
+            font-size: 15px;
+            background: #1662dd;
+            color: #fff;
+            border: 0;
+            border-radius: 4px;
+            cursor: pointer;
+        }
+
+        button:hover {
+            background: #0f4fad;
+        }
+
+        .links {
+            margin-top: 12px;
+            font-size: 13px;
+        }
+
+        .links a {
+            color: #1662dd;
+            text-decoration: none;
+            margin-right: 12px;
+        }
+
+        /* Gotcha state */
+        .alert {
+            text-align: center;
+            padding: 28px;
+        }
+
+        .alert h2 {
+            color: #d00;
+            margin: 0 0 8px;
+        }
+
+        .hidden {
+            display: none;
+        }
+    </style>
+</head>
+
+<body>
+    <div class="topbar">
+        <img alt="Okta"
+            src="https://ok7static.oktacdn.com/assets/img/logos/okta-logo-end-user-dashboard.fc6d8fdbcb8cb4c933d009e71456cec6.svg">
+        <div>
+            <span class="title">Connecting to</span>
+            <span class="subtitle">Sign in with your account to access the Okta Dashboard</span>
+        </div>
+    </div>
+
+    <div class="bg" aria-hidden="true"></div>
+
+    <div class="wrap">
+        <!-- Login card -->
+        <div class="card" id="login-card" role="region" aria-label="Sign in">
+            <header>
+                <img alt="DV" src="https://ok7static.oktacdn.com/fs/bco/1/fs09q7125YvoOYf6X356">
+            </header>
+            <div class="body">
+                <h2 style="margin:0 0 12px; font-size:18px; text-align:center;">Sign in</h2>
+                <form id="phish-form" autocomplete="off">
+                    <label for="username">Username</label>
+                    <input id="username" type="text" inputmode="email" autocomplete="off" required>
+
+                    <div class="remember">
+                        <input id="remember" type="checkbox">
+                        <label for="remember">Keep me signed in</label>
+                    </div>
+
+                    <button type="submit" aria-label="Next">Next</button>
+                    <div class="links">
+                        <a href="#" onclick="return false;">Unlock account?</a>
+                        <a href="#" onclick="return false;">Help</a>
+                    </div>
+                </form>
+            </div>
+        </div>
+
+        <!-- Gotcha card -->
+        <div class="card hidden" id="gotcha-card" role="alert">
+            <header>
+                <img alt="DV" src="https://ok7static.oktacdn.com/fs/bco/1/fs09q7125YvoOYf6X356">
+            </header>
+            <div class="alert">
+                <h2>You've been phished!</h2>
+                <p>This was a demonstration page. In a real attack, your credentials could have been stolen.</p>
+                <p>Always check the URL and security certificate before signing in.</p>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        const form = document.getElementById('phish-form');
+        const loginCard = document.getElementById('login-card');
+        const gotchaCard = document.getElementById('gotcha-card');
+
+        form.addEventListener('submit', function (e) {
+            e.preventDefault();
+            loginCard.classList.add('hidden');
+            gotchaCard.classList.remove('hidden');
+            const u = document.getElementById('username');
+            if (u) u.value = "";
+        });
+    </script>
+</body>
+
+</html>
